@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/10 22:13:47 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/11 00:35:12 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_str_of_tlist(t_list **lst)
 		return (NULL);
 	i = 0;
 	list_char = *lst;
-	while (list_char->next)
+	while (list_char)
 	{
 		str[i] = list_char->c;
 		i++;
@@ -31,21 +31,6 @@ char	*get_str_of_tlist(t_list **lst)
 	}
 	str[i] = '\0';
 	return (str);
-}
-
-int	ft_lstsize(t_list *lst)
-{
-	t_list	*temp;
-	int		count;
-
-	temp = lst;
-	count = 0;
-	while (temp)
-	{
-		temp = temp->next;
-		count++;
-	}
-	return (count);
 }
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
@@ -84,6 +69,11 @@ char	*get_next_line(int fd)
 	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	res = malloc(sizeof(char) * BUFFER_SIZE);
+	if (!res)
+		return (NULL);
+	str = malloc(sizeof(t_list));
+	if (!str)
+		return (NULL);
 	while (read(fd, res, BUFFER_SIZE) > 0)
 	{
 		i = 0;
@@ -98,11 +88,16 @@ char	*get_next_line(int fd)
 	return (get_str_of_tlist(str));
 }
 
-int	main(void)
+/*int	main(void)
 {
 	int file = open("test.txt", O_RDONLY);
 	char *temp = get_next_line(file);
+	printf("%s\n", temp);
+	temp = get_next_line(file);
+	printf("%s\n", temp);
+	temp = get_next_line(file);
+	printf("%s\n", temp);
 	close(file);
-	printf("%s", temp);
+	free(temp);
 	return (0);
-}
+}*/
