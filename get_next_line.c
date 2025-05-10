@@ -6,57 +6,80 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/09 12:04:54 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/10 22:13:47 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+char	*get_str_of_tlist(t_list **lst)
 {
-	int	i;
+	char	*str;
+	int		i;
+	t_list	*list_char;
 
+	str = malloc(sizeof(char) * (ft_lstsize(*lst) + 1));
+	if (!str)
+		return (NULL);
 	i = 0;
-	while (s[i] != '\0')
+	list_char = *lst;
+	while (list_char->next)
 	{
-		i = i + 1;
+		str[i] = list_char->c;
+		i++;
+		list_char = list_char->next;
 	}
-	return (i);
+	str[i] = '\0';
+	return (str);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+int	ft_lstsize(t_list *lst)
 {
-	char	*res;
-	int		i;
-	int		j;
+	t_list	*temp;
+	int		count;
 
-	res = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (!res)
+	temp = lst;
+	count = 0;
+	while (temp)
+	{
+		temp = temp->next;
+		count++;
+	}
+	return (count);
+}
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*temp;
+
+	if (!*lst)
+	{
+		ft_lstadd_front(lst, new);
+		return ;
+	}
+	temp = *lst;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = new;
+}
+
+t_list	*ft_lstnew(char c)
+{
+	t_list	*new;
+
+	new = malloc(sizeof(t_list));
+	if (!new)
 		return (0);
-	i = 0;
-	j = 0;
-	while (s1[i])
-	{
-		res[j] = s1[i];
-		i++;
-		j++;
-	}
-	i = 0;
-	while (s2[i])
-	{
-		res[j] = s2[i];
-		i++;
-		j++;
-	}
-	res[j] = '\0';
-	return (res);
+	new->c = c;
+	new->next = NULL;
+	return (new);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*res;
-	static char	*str;
-	int			i;
+	char			*res;
+	static t_list	**str;
+	int				i;
 
 	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -67,19 +90,12 @@ char	*get_next_line(int fd)
 		while (res[i])
 		{
 			if (res[i] == '\n')
-			{
-				str = ft_strjoin(str, res);
-				if (!str)
-					return (NULL);
-				return (str);
-			}
+				return (get_str_of_tlist(str));
+			ft_lstadd_back(str, ft_lstnew(res[i]));
 			i++;
 		}
 	}
-	str = ft_strjoin(str, res);
-	if (!str)
-		return (NULL);
-	return (str);
+	return (get_str_of_tlist(str));
 }
 
 int	main(void)
