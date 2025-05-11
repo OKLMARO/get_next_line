@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/11 10:15:47 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/11 10:22:46 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 
 	if (!*lst)
 	{
-		ft_lstadd_front(lst, new);
+		*lst = new;
 		return ;
 	}
 	temp = *lst;
@@ -75,6 +75,7 @@ char	*get_next_line(int fd)
 	str = malloc(sizeof(t_list));
 	if (!str)
 		return (NULL);
+	str = NULL;
 	while (read(fd, res, BUFFER_SIZE) > 0)
 	{
 		i = 0;
@@ -84,7 +85,6 @@ char	*get_next_line(int fd)
 			{
 				return_str = get_str_of_tlist(&str);
 				ft_lstclear(&str);
-				free(str);
 				free(res);
 				return (return_str);
 			}
@@ -94,7 +94,6 @@ char	*get_next_line(int fd)
 	}
 	return_str = get_str_of_tlist(&str);
 	ft_lstclear(&str);
-	free(str);
 	free(res);
 	return (return_str);
 }
