@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/11 10:01:13 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/11 10:15:47 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ char	*get_str_of_tlist(t_list **lst)
 		list_char = list_char->next;
 	}
 	str[i] = '\0';
-	//ft_lstclear(lst);
 	return (str);
 }
 
@@ -64,7 +63,8 @@ t_list	*ft_lstnew(char c)
 char	*get_next_line(int fd)
 {
 	char	*res;
-	t_list	**str;
+	char	*return_str;
+	t_list	*str;
 	int		i;
 
 	if (fd <= 0 || BUFFER_SIZE <= 0)
@@ -82,15 +82,21 @@ char	*get_next_line(int fd)
 		{
 			if (res[i] == '\n')
 			{
+				return_str = get_str_of_tlist(&str);
+				ft_lstclear(&str);
+				free(str);
 				free(res);
-				return (get_str_of_tlist(str));
+				return (return_str);
 			}
-			ft_lstadd_back(str, ft_lstnew(res[i]));
+			ft_lstadd_back(&str, ft_lstnew(res[i]));
 			i++;
 		}
 	}
+	return_str = get_str_of_tlist(&str);
+	ft_lstclear(&str);
+	free(str);
 	free(res);
-	return (get_str_of_tlist(str));
+	return (return_str);
 }
 
 int	main(void)
