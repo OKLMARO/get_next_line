@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/11 00:06:53 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/11 00:49:25 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,26 @@ int	ft_lstsize(t_list *lst)
 		count++;
 	}
 	return (count);
+}
+
+void	ft_lstfree(t_list *lst)
+{
+	if (!lst)
+		return ;
+	free(lst);
+}
+
+void	ft_lstclear(t_list **lst)
+{
+	t_list	*lst_next;
+
+	if (!lst)
+		return ;
+	lst_next = *lst;
+	while (lst_next)
+	{
+		lst_next = lst_next->next;
+		ft_lstfree(*lst);
+		*lst = lst_next;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/11 00:35:12 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/11 10:01:13 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*get_str_of_tlist(t_list **lst)
 		list_char = list_char->next;
 	}
 	str[i] = '\0';
+	//ft_lstclear(lst);
 	return (str);
 }
 
@@ -62,9 +63,9 @@ t_list	*ft_lstnew(char c)
 
 char	*get_next_line(int fd)
 {
-	char			*res;
-	static t_list	**str;
-	int				i;
+	char	*res;
+	t_list	**str;
+	int		i;
 
 	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -80,24 +81,30 @@ char	*get_next_line(int fd)
 		while (res[i])
 		{
 			if (res[i] == '\n')
+			{
+				free(res);
 				return (get_str_of_tlist(str));
+			}
 			ft_lstadd_back(str, ft_lstnew(res[i]));
 			i++;
 		}
 	}
+	free(res);
 	return (get_str_of_tlist(str));
 }
 
-/*int	main(void)
+int	main(void)
 {
 	int file = open("test.txt", O_RDONLY);
 	char *temp = get_next_line(file);
 	printf("%s\n", temp);
+	//free(temp);
 	temp = get_next_line(file);
 	printf("%s\n", temp);
+	//free(temp);
 	temp = get_next_line(file);
 	printf("%s\n", temp);
 	close(file);
-	free(temp);
+	//free(temp);
 	return (0);
-}*/
+}

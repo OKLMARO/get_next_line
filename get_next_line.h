@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 00:47:15 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/11 00:35:56 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/11 00:49:58 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ int		ft_lstsize(t_list *lst);
 t_list	*ft_lstnew(char c);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 char	*get_str_of_tlist(t_list **lst);
+void	ft_lstfree(t_list *lst);
+void	ft_lstclear(t_list **lst);
 
 #endif
