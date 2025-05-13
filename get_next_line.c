@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/11 10:22:46 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/13 16:15:34 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*get_str_of_tlist(t_list **lst)
 		list_char = list_char->next;
 	}
 	str[i] = '\0';
+	//ft_lstclear(lst);
 	return (str);
 }
 
@@ -62,40 +63,31 @@ t_list	*ft_lstnew(char c)
 
 char	*get_next_line(int fd)
 {
-	char	*res;
-	char	*return_str;
-	t_list	*str;
-	int		i;
+	char			*buffer;
+	static t_list	*str;
+	int				i;
 
 	if (fd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	res = malloc(sizeof(char) * BUFFER_SIZE);
-	if (!res)
+	buffer = malloc(sizeof(char) * BUFFER_SIZE);
+	if (!buffer)
 		return (NULL);
 	str = malloc(sizeof(t_list));
 	if (!str)
 		return (NULL);
 	str = NULL;
-	while (read(fd, res, BUFFER_SIZE) > 0)
+	while (read(fd, buffer, BUFFER_SIZE) > 0)
 	{
 		i = 0;
-		while (res[i])
+		while (buffer[i])
 		{
-			if (res[i] == '\n')
-			{
-				return_str = get_str_of_tlist(&str);
-				ft_lstclear(&str);
-				free(res);
-				return (return_str);
-			}
-			ft_lstadd_back(&str, ft_lstnew(res[i]));
+			if (buffer[i] == '\n')
+				return (get_str_of_tlist(&str));
+			ft_lstadd_back(&str, ft_lstnew(buffer[i]));
 			i++;
 		}
 	}
-	return_str = get_str_of_tlist(&str);
-	ft_lstclear(&str);
-	free(res);
-	return (return_str);
+	return (get_str_of_tlist(&str));
 }
 
 int	main(void)
