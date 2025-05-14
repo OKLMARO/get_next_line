@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 00:47:15 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/11 10:24:28 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/14 15:40:39 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,11 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-typedef struct s_list
-{
-	char			c;
-	struct s_list	*next;
-}					t_list;
-
 char	*get_next_line(int fd);
-int		ft_lstsize(t_list *lst);
-t_list	*ft_lstnew(char c);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-char	*get_str_of_tlist(t_list **lst);
-void	ft_lstfree(t_list *lst);
-void	ft_lstclear(t_list **lst);
+char	*ft_join(char *s1, const char *s2);
+size_t	ft_strlen(const char *str);
+size_t	ft_strlen_sup(const char *s1, int c);
+char	*ft_strsup(char *s, int c);
+
 
 #endif

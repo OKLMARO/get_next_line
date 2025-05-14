@@ -6,88 +6,113 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/13 16:15:34 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/14 15:56:47 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_str_of_tlist(t_list **lst)
+char	*jump_after_n(char *s)
 {
-	char	*str;
-	int		i;
-	t_list	*list_char;
+	int	i;
+	int	j;
 
-	str = malloc(sizeof(char) * (ft_lstsize(*lst) + 1));
-	if (!str)
+	i = 0;
+	while (s[i] != '\n' && s[i])
+		i++;
+	if (s[i] == '\n' && s[i + 1] != 0)
+		return (&s[i + 1]);
+	return (s);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int		i;
+	char	*res;
+
+	res = (char *) s;
+	i = 0;
+	while (res[i] != '\0')
+	{
+		if (res[i] == (unsigned char) c)
+			return (&res[i]);
+		i++;
+	}
+	if (res[i] == (unsigned char) c)
+		return (&res[i]);
+	return (0);
+}
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+char	*ft_join(char *s1, const char *s2)
+{
+	size_t	i;
+	size_t	j;
+	char	*res;
+
+	res = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!res)
 		return (NULL);
 	i = 0;
-	list_char = *lst;
-	while (list_char)
+	j = 0;
+	while (s1[j])
 	{
-		str[i] = list_char->c;
+		res[i] = s1[j];
 		i++;
-		list_char = list_char->next;
+		j++;
 	}
-	str[i] = '\0';
-	//ft_lstclear(lst);
-	return (str);
-}
-
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*temp;
-
-	if (!*lst)
+	j = 0;
+	while (s2[j])
 	{
-		*lst = new;
-		return ;
+		res[i] = s2[j];
+		i++;
+		j++;
 	}
-	temp = *lst;
-	while (temp->next)
-		temp = temp->next;
-	temp->next = new;
-}
-
-t_list	*ft_lstnew(char c)
-{
-	t_list	*new;
-
-	new = malloc(sizeof(t_list));
-	if (!new)
-		return (0);
-	new->c = c;
-	new->next = NULL;
-	return (new);
+	res[i] = '\0';
+	return (res);
 }
 
 char	*get_next_line(int fd)
 {
-	char			*buffer;
-	static t_list	*str;
-	int				i;
+	static char	*buffer;
+	char		*str;
+	int			lecture;
 
-	if (fd <= 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	if (buffer)
+	{
+		str = malloc(1);
+		if (!str)
+			return (NULL);
+		str[0] = 0;
+		str = ft_join(str, jump_after_n(buffer));
+		//str = ft_strsup(buffer, 0);
+		//if (!str)
+		//	return (NULL);
+		free(buffer);
+	}
 	buffer = malloc(sizeof(char) * BUFFER_SIZE);
 	if (!buffer)
 		return (NULL);
-	str = malloc(sizeof(t_list));
-	if (!str)
-		return (NULL);
-	str = NULL;
-	while (read(fd, buffer, BUFFER_SIZE) > 0)
+	lecture = 1;
+	while (!ft_strchr(buffer, '\n') && lecture > 0)
 	{
-		i = 0;
-		while (buffer[i])
-		{
-			if (buffer[i] == '\n')
-				return (get_str_of_tlist(&str));
-			ft_lstadd_back(&str, ft_lstnew(buffer[i]));
-			i++;
-		}
+		lecture = read(fd, buffer, BUFFER_SIZE);
+		str = ft_join(str, buffer);
+		if (!str)
+			return (NULL);
 	}
-	return (get_str_of_tlist(&str));
+	return (ft_strsup(str, '\n'));
 }
 
 int	main(void)
@@ -95,13 +120,13 @@ int	main(void)
 	int file = open("test.txt", O_RDONLY);
 	char *temp = get_next_line(file);
 	printf("%s\n", temp);
-	//free(temp);
+	free(temp);
 	temp = get_next_line(file);
 	printf("%s\n", temp);
-	//free(temp);
+	free(temp);
 	temp = get_next_line(file);
 	printf("%s\n", temp);
 	close(file);
-	//free(temp);
+	free(temp);
 	return (0);
 }

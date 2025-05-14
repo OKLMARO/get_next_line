@@ -6,45 +6,37 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/11 10:22:09 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/14 15:32:47 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_lstsize(t_list *lst)
+size_t	ft_strlen_sup(const char *s1, int c)
 {
-	t_list	*temp;
-	int		count;
+	size_t	i;
 
-	temp = lst;
-	count = 0;
-	while (temp)
-	{
-		temp = temp->next;
-		count++;
-	}
-	return (count);
+	i = 0;
+	while (s1[i] && s1[i] != c)
+		i++;
+	return (i);
 }
 
-void	ft_lstfree(t_list *lst)
+char	*ft_strsup(char *s, int c)
 {
-	if (!lst)
-		return ;
-	free(lst);
-}
+	int		i;
+	char	*dest;
 
-void	ft_lstclear(t_list **lst)
-{
-	t_list	*lst_next;
-
-	if (!lst)
-		return ;
-	lst_next = *lst;
-	while (lst_next)
+	dest = malloc(sizeof(char) * ft_strlen_sup((char *) s, c) + 1);
+	if (!dest)
+		return (0);
+	i = 0;
+	while (s[i] && s[i] != c)
 	{
-		lst_next = lst_next->next;
-		ft_lstfree(*lst);
-		*lst = lst_next;
+		dest[i] = s[i];
+		i++;
 	}
+	dest[i] = '\0';
+	free(s);
+	return (dest);
 }
