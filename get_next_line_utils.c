@@ -36,7 +36,8 @@ char	*ft_strsup(char *s, int c)
 		dest[i] = s[i];
 		i++;
 	}
-	dest[i] = '\0';
+	dest[i] = s[i];
+	dest[i + 1] = '\0';
 	free(s);
 	return (dest);
 }

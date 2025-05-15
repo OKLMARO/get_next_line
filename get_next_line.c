@@ -95,12 +95,12 @@ char	*get_line(int fd)
 	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	buffer = NULL;
+	buffer[0] = 0;
 	while (!ft_strchr(buffer, '\n') && lecture > 0)
 	{
 		lecture = read(fd, buffer, BUFFER_SIZE);
 		if(lecture < 0)
-			return NULL;
+			return (NULL);
 		buffer[lecture] = '\0';
 		str = ft_join(str, buffer);
 		if (!str)
@@ -126,16 +126,13 @@ char	*get_next_line(int fd)
 
 int	main(void)
 {
-	int file = open("test.txt", O_RDONLY);
-	char *temp = get_next_line(file);
-	//printf("%s\n", temp);
-	free(temp);
-	temp = get_next_line(file);
-	//printf("%s\n", temp);
-	free(temp);
-	temp = get_next_line(file);
-	//printf("%s\n", temp);
+	int file = open("get_next_line.c", O_RDONLY);
+	char*	temp;
+	while (temp = get_next_line(file))
+	{
+		printf("%s\n", temp);
+		free(temp);  
+	}
 	close(file);
-	free(temp);
 	return (0);
 }
