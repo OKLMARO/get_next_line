@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/14 15:56:47 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/15 12:46:29 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 char	*jump_after_n(char *s)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (s[i] != '\n' && s[i])
@@ -96,21 +95,25 @@ char	*get_next_line(int fd)
 			return (NULL);
 		str[0] = 0;
 		str = ft_join(str, jump_after_n(buffer));
-		//str = ft_strsup(buffer, 0);
-		//if (!str)
-		//	return (NULL);
 		free(buffer);
 	}
-	buffer = malloc(sizeof(char) * BUFFER_SIZE);
+	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
 	lecture = 1;
 	while (!ft_strchr(buffer, '\n') && lecture > 0)
 	{
 		lecture = read(fd, buffer, BUFFER_SIZE);
+		if (lecture != BUFFER_SIZE)
+			buffer[lecture] = '\0';
 		str = ft_join(str, buffer);
 		if (!str)
 			return (NULL);
+	}
+	if (lecture == 0)
+	{
+		free(buffer);
+		return (ft_strsup(str, '\0'));
 	}
 	return (ft_strsup(str, '\n'));
 }
@@ -127,6 +130,6 @@ int	main(void)
 	temp = get_next_line(file);
 	printf("%s\n", temp);
 	close(file);
-	free(temp);
+	//free(temp);
 	return (0);
 }
