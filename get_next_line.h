@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 00:47:15 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/15 11:25:21 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/15 14:04:16 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ char	*ft_join(char *s1, const char *s2);
 size_t	ft_strlen(const char *str);
 size_t	ft_strlen_sup(const char *s1, int c);
 char	*ft_strsup(char *s, int c);
-
+char	*ft_strdup(char *src);
 
 #endif
