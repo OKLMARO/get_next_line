@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/15 15:09:50 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/16 20:05:16 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*jump_after_n(char *s)
 {
 	int	i;
 
+	if (!s)
+		return (NULL);
 	i = 0;
 	while (s[i] != '\n' && s[i])
 		i++;
@@ -60,6 +62,8 @@ char	*ft_join(char *s1, const char *s2)
 	size_t	j;
 	char	*res;
 
+	if (!s1 && !s2)
+		return (NULL);
 	res = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!res)
 		return (NULL);
@@ -72,7 +76,7 @@ char	*ft_join(char *s1, const char *s2)
 		j++;
 	}
 	j = 0;
-	while (s2[j])
+	while (s2 && s2[j])
 	{
 		res[i] = s2[j];
 		i++;
@@ -107,7 +111,7 @@ char	*get_line(int fd)
 			return (NULL);
 	}
 	free(buffer);
-	if (lecture == 0)
+	if (lecture <= 0)
 		return (NULL);
 	return (str);
 }
@@ -115,22 +119,28 @@ char	*get_line(int fd)
 char	*get_next_line(int fd)
 {
 	static char	*s1;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	s1 = get_line(fd);
+	line = get_line(fd);
+	s1 = jump_after_n(line);
+	printf("s1 : %s\nline : %s\n", s1, line);
 	if(!s1)
+	{
+		free(s1);
 		return (NULL);
-	return (ft_strsup(s1, '\n'));
+	}
+	return (ft_strsup(ft_join(s1, line), '\n'));
 }
 
 int	main(void)
 {
-	int file = open("get_next_line.c", O_RDONLY);
+	int file = open("test.txt", O_RDONLY);
 	char*	temp;
 	while (temp = get_next_line(file))
 	{
-		printf("%s\n", temp);
+		//printf("gnl : %s", temp);
 		free(temp);  
 	}
 	close(file);
