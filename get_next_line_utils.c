@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/15 14:03:31 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/17 14:50:33 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,18 @@ char	*ft_strdup(char *src)
 	}
 	dest[i] = '\0';
 	return (dest);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t			i;
+	unsigned char	*c;
+
+	i = 0;
+	while (i < n)
+	{
+		c = (unsigned char *)s;
+		c[i] = '\0';
+		i++;
+	}
 }

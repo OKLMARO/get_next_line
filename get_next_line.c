@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
+/*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/16 20:05:16 by codespace        ###   ########.fr       */
+/*   Updated: 2025/05/17 15:15:06 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_join(char *s1, const char *s2)
+char	*ft_join(char *s1, char *s2)
 {
 	size_t	i;
 	size_t	j;
@@ -99,12 +99,9 @@ char	*get_line(int fd)
 	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	buffer[0] = 0;
 	while (!ft_strchr(buffer, '\n') && lecture > 0)
 	{
 		lecture = read(fd, buffer, BUFFER_SIZE);
-		if(lecture < 0)
-			return (NULL);
 		buffer[lecture] = '\0';
 		str = ft_join(str, buffer);
 		if (!str)
@@ -120,17 +117,30 @@ char	*get_next_line(int fd)
 {
 	static char	*s1;
 	char		*line;
+	char		*str;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = get_line(fd);
-	s1 = jump_after_n(line);
-	printf("s1 : %s\nline : %s\n", s1, line);
-	if(!s1)
+	if (!s1)
+	{
+		s1 = malloc(sizeof(char) * BUFFER_SIZE + 1);
+		if (!s1)
+			return (NULL);
+		s1 = ft_strsup(jump_after_n(line), '\0');
+	}
+	else
+		str = ft_join(s1, line);
+	printf("str : %s\n", str);
+	s1 = ft_strsup(jump_after_n(line), '\0');\
+	printf("s1 : %s\n", s1);
+	free(line);
+	if (line == NULL)
 	{
 		free(s1);
 		return (NULL);
 	}
+	//printf("s1 : %s\nline : %s\n", s1, line);
 	return (ft_strsup(ft_join(s1, line), '\n'));
 }
 
@@ -140,7 +150,7 @@ int	main(void)
 	char*	temp;
 	while (temp = get_next_line(file))
 	{
-		//printf("gnl : %s", temp);
+		printf("gnl : %s", temp);
 		free(temp);  
 	}
 	close(file);
