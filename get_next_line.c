@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/17 15:15:06 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/17 22:23:06 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,40 +108,39 @@ char	*get_line(int fd)
 			return (NULL);
 	}
 	free(buffer);
-	if (lecture <= 0)
-		return (NULL);
-	return (str);
+	//printf("str : %s | lecture %i\n", str, lecture);
+	if (ft_strlen(str))
+		return (str);
+	//if (lecture <= 0)
+	return (NULL);
+	//return (str);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*s1;
+	static char	*after_n;
 	char		*line;
-	char		*str;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	line = get_line(fd);
-	if (!s1)
+	char		*res;
+	
+	if (!after_n)
 	{
-		s1 = malloc(sizeof(char) * BUFFER_SIZE + 1);
-		if (!s1)
+		after_n = malloc(sizeof(char) * BUFFER_SIZE + 1);
+		if (!after_n)
 			return (NULL);
-		s1 = ft_strsup(jump_after_n(line), '\0');
+		ft_bzero(after_n, BUFFER_SIZE);
 	}
-	else
-		str = ft_join(s1, line);
-	printf("str : %s\n", str);
-	s1 = ft_strsup(jump_after_n(line), '\0');\
-	printf("s1 : %s\n", s1);
-	free(line);
-	if (line == NULL)
+	line = get_line(fd);
+	if (line == NULL && !after_n[0])
 	{
-		free(s1);
+		free(after_n);
 		return (NULL);
 	}
-	//printf("s1 : %s\nline : %s\n", s1, line);
-	return (ft_strsup(ft_join(s1, line), '\n'));
+	if (line == NULL && after_n[0])
+		return (after_n);
+	res = ft_join(after_n, line);
+	after_n = jump_after_n(line);
+	free(line);
+	return (ft_strsup(res, '\n'));
 }
 
 int	main(void)
@@ -150,7 +149,7 @@ int	main(void)
 	char*	temp;
 	while (temp = get_next_line(file))
 	{
-		printf("gnl : %s", temp);
+		printf("%s", temp);
 		free(temp);  
 	}
 	close(file);
