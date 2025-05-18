@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/18 12:31:06 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/18 18:03:46 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,22 @@ char	*ft_strsup(char *s, int c)
 	int		i;
 	char	*dest;
 
+	if (!s)
+		return (NULL);
 	dest = malloc(sizeof(char) * ft_strlen_sup((char *) s, c) + 1);
 	if (!dest)
-		return (0);
+	{
+		free(s);
+		return (NULL);
+	}
 	i = 0;
-	while (s[i] && s[i] != c)
+	while (i <= ft_strlen_sup(s, c))
 	{
 		dest[i] = s[i];
 		i++;
 	}
-	dest[i] = s[i];
-	dest[i + 1] = '\0';
-	free(s);
+	//dest[i] = 0;
+	//free(s);
 	return (dest);
 }
 

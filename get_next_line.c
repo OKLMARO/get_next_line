@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/18 12:55:11 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/18 18:18:52 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ char	*ft_join(char *s1, char *s2)
 		j++;
 	}
 	res[i] = '\0';
-	if (s1)
-		free(s1);
+	//if (s1)
+		//free(s1);
 	return (res);
 }
 
@@ -110,10 +110,12 @@ char	*get_line(int fd)
 			return (NULL);
 		//printf("str : %s\n", str);
 	}
-	free(buffer);
 	//printf("str : %s | lecture %i\n", str, lecture);
 	if (ft_strlen(str))
+	{
+		free(buffer);
 		return (str);
+	}
 	//if (lecture <= 0)
 	return (NULL);
 	//return (str);
