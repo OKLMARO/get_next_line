@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/17 22:20:13 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/18 12:31:06 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_strdup(char *src)
 	char	*dest;
 
 	i = 0;
-	dest = malloc(sizeof(char) * ft_strlen(src) + 1);
+	dest = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!dest)
 		return (0);
 	while (src[i])
@@ -58,7 +58,7 @@ char	*ft_strdup(char *src)
 	}
 	while (i <= BUFFER_SIZE)
 	{
-		dest[i] = '\0';
+		dest[i] = 0;
 		i++;
 	}
 	return (dest);

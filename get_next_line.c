@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/17 22:23:06 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/18 12:55:11 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,16 +96,19 @@ char	*get_line(int fd)
 
 	str = NULL;
 	lecture = 1;
-	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
+	ft_bzero(buffer, BUFFER_SIZE + 1);
 	while (!ft_strchr(buffer, '\n') && lecture > 0)
 	{
 		lecture = read(fd, buffer, BUFFER_SIZE);
-		buffer[lecture] = '\0';
+		//printf("buffer : %s\n", buffer);
 		str = ft_join(str, buffer);
+		ft_bzero(buffer, BUFFER_SIZE + 1);
 		if (!str)
 			return (NULL);
+		//printf("str : %s\n", str);
 	}
 	free(buffer);
 	//printf("str : %s | lecture %i\n", str, lecture);
@@ -124,7 +127,7 @@ char	*get_next_line(int fd)
 	
 	if (!after_n)
 	{
-		after_n = malloc(sizeof(char) * BUFFER_SIZE + 1);
+		after_n = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		if (!after_n)
 			return (NULL);
 		ft_bzero(after_n, BUFFER_SIZE);
