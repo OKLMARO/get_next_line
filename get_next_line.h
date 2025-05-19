@@ -6,15 +6,17 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 00:47:15 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/17 22:20:18 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:59:18 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 6
-#endif
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 6
+# endif
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>

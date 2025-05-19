@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/18 18:03:46 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:21:59 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_strlen_sup(const char *s1, int c)
 
 char	*ft_strsup(char *s, int c)
 {
-	int		i;
+	size_t	i;
 	char	*dest;
 
 	if (!s)
@@ -41,8 +41,7 @@ char	*ft_strsup(char *s, int c)
 		dest[i] = s[i];
 		i++;
 	}
-	//dest[i] = 0;
-	//free(s);
+	free(s);
 	return (dest);
 }
 
@@ -52,10 +51,10 @@ char	*ft_strdup(char *src)
 	char	*dest;
 
 	i = 0;
-	dest = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	dest = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!dest)
 		return (0);
-	while (src[i])
+	while (src[i] && i <= BUFFER_SIZE)
 	{
 		dest[i] = src[i];
 		i++;

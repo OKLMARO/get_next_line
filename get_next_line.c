@@ -6,49 +6,48 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/18 18:18:52 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/19 16:24:26 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*jump_after_n(char *s)
+char *jump_after_n(char *s)
 {
-	int	i;
+	int i;
 
 	if (!s)
 		return (NULL);
 	i = 0;
 	while (s[i] != '\n' && s[i])
 		i++;
-	if (s[i] == '\n' && s[i + 1] != 0)
+	if (s[i] == '\n')
 		return (ft_strdup(&s[i + 1]));
 	return (NULL);
 }
 
-char	*ft_strchr(const char *s, int c)
+char *ft_strchr(char *s, int c)
 {
-	int		i;
-	char	*res;
+	size_t i;
+	char *res;
 
 	if (!s)
-		return (0);
-	res = (char *) s;
+		return (NULL);
 	i = 0;
-	while (res[i] != '\0')
+	while (s[i] != '\0')
 	{
-		if (res[i] == (unsigned char) c)
-			return (&res[i]);
+		if (s[i] == (unsigned char)c)
+			return (&s[i]);
 		i++;
 	}
-	if (res[i] == (unsigned char) c)
-		return (&res[i]);
+	if (s[i] == (unsigned char)c)
+		return (&s[i]);
 	return (0);
 }
 
-size_t	ft_strlen(const char *str)
+size_t ft_strlen(const char *str)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (str && str[i])
@@ -56,11 +55,11 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_join(char *s1, char *s2)
+char *ft_join(char *s1, char *s2)
 {
-	size_t	i;
-	size_t	j;
-	char	*res;
+	size_t i;
+	size_t j;
+	char *res;
 
 	if (!s1 && !s2)
 		return (NULL);
@@ -82,60 +81,49 @@ char	*ft_join(char *s1, char *s2)
 		i++;
 		j++;
 	}
+	if (s1)
+		free(s1);
 	res[i] = '\0';
-	//if (s1)
-		//free(s1);
 	return (res);
 }
 
-char	*get_line(int fd)
+char *get_line(int fd)
 {
-	char	*buffer;
-	char	*str;
-	ssize_t		lecture;
+	char *buffer;
+	char *res;
+	int line;
 
-	str = NULL;
-	lecture = 1;
+	res = NULL;
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
-	ft_bzero(buffer, BUFFER_SIZE + 1);
-	while (!ft_strchr(buffer, '\n') && lecture > 0)
+	line = 1;
+	while (!ft_strchr(res, '\n') && line > 0)
 	{
-		lecture = read(fd, buffer, BUFFER_SIZE);
-		//printf("buffer : %s\n", buffer);
-		str = ft_join(str, buffer);
 		ft_bzero(buffer, BUFFER_SIZE + 1);
-		if (!str)
+		line = read(fd, buffer, BUFFER_SIZE);
+		res = ft_join(res, buffer);
+		if (!res)
+		{
+			free(buffer);
 			return (NULL);
-		//printf("str : %s\n", str);
+		}
 	}
-	//printf("str : %s | lecture %i\n", str, lecture);
-	if (ft_strlen(str))
-	{
-		free(buffer);
-		return (str);
-	}
-	//if (lecture <= 0)
+	free(buffer);
+	if (res)
+		return (res);
 	return (NULL);
-	//return (str);
 }
 
-char	*get_next_line(int fd)
+char *get_next_line(int fd)
 {
-	static char	*after_n;
-	char		*line;
-	char		*res;
-	
-	if (!after_n)
-	{
-		after_n = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		if (!after_n)
-			return (NULL);
-		ft_bzero(after_n, BUFFER_SIZE);
-	}
+	static char *after_n;
+	char *line;
+	char *res;
+
 	line = get_line(fd);
-	if (line == NULL && !after_n[0])
+	printf("%s", line);
+	if (!line && !after_n)
 	{
 		free(after_n);
 		return (NULL);
@@ -143,19 +131,21 @@ char	*get_next_line(int fd)
 	if (line == NULL && after_n[0])
 		return (after_n);
 	res = ft_join(after_n, line);
+	if (after_n)
+		free(after_n);
 	after_n = jump_after_n(line);
 	free(line);
 	return (ft_strsup(res, '\n'));
 }
 
-int	main(void)
+int main(void)
 {
-	int file = open("test.txt", O_RDONLY);
-	char*	temp;
+	int file = open("get_next_line.c", O_RDONLY);
+	char *temp;
 	while (temp = get_next_line(file))
 	{
-		printf("%s", temp);
-		free(temp);  
+		//printf("%s", temp);
+		free(temp);
 	}
 	close(file);
 	return (0);
