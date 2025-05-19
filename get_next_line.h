@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 00:47:15 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/19 11:59:18 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/20 00:23:02 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ size_t	ft_strlen_sup(const char *s1, int c);
 char	*ft_strsup(char *s, int c);
 char	*ft_strdup(char *src);
 void	ft_bzero(void *s, size_t n);
+void	ft_memcpy(void *dest, void *src, size_t n);
 
 #endif

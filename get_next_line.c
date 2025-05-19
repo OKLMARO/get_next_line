@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/19 16:24:26 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/20 01:11:45 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char *jump_after_n(char *s)
 	while (s[i] != '\n' && s[i])
 		i++;
 	if (s[i] == '\n')
-		return (ft_strdup(&s[i + 1]));
+		return (&s[i + 1]);
 	return (NULL);
 }
 
@@ -89,14 +89,14 @@ char *ft_join(char *s1, char *s2)
 
 char *get_line(int fd)
 {
-	char *buffer;
-	char *res;
-	int line;
+	char	*buffer;
+	char	*res;
+	int		line;
 
-	res = NULL;
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
+	res = NULL;
 	line = 1;
 	while (!ft_strchr(res, '\n') && line > 0)
 	{
@@ -108,32 +108,35 @@ char *get_line(int fd)
 			free(buffer);
 			return (NULL);
 		}
+		if (line == 0)
+			return (res);
 	}
 	free(buffer);
-	if (res)
-		return (res);
-	return (NULL);
+	return (res);
 }
+
 
 char *get_next_line(int fd)
 {
 	static char *after_n;
-	char *line;
-	char *res;
+	char 		*line;
+	char 		*res;
 
+	if (!after_n)
+	{
+		after_n = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		if (!after_n)
+			return (NULL);
+	}
 	line = get_line(fd);
 	printf("%s", line);
 	if (!line && !after_n)
-	{
-		free(after_n);
 		return (NULL);
-	}
-	if (line == NULL && after_n[0])
+	if (!line && after_n[0])
 		return (after_n);
+	ft_bzero(after_n, BUFFER_SIZE + 1);
+	ft_memcpy(after_n, jump_after_n(line), ft_strlen(jump_after_n(line)));
 	res = ft_join(after_n, line);
-	if (after_n)
-		free(after_n);
-	after_n = jump_after_n(line);
 	free(line);
 	return (ft_strsup(res, '\n'));
 }
