@@ -6,30 +6,15 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/20 06:48:58 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/20 14:55:16 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *jump_after_n(char *s)
+char	*ft_strchr(char *s, int c)
 {
-	int i;
-
-	if (!s)
-		return (NULL);
-	i = 0;
-	while (s[i] != '\n' && s[i])
-		i++;
-	if (s[i] == '\n')
-		return (&s[i + 1]);
-	return (NULL);
-}
-
-char *ft_strchr(char *s, int c)
-{
-	size_t i;
-	char *res;
+	size_t	i;
 
 	if (!s)
 		return (NULL);
@@ -45,52 +30,41 @@ char *ft_strchr(char *s, int c)
 	return (0);
 }
 
-size_t ft_strlen(const char *str)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t i;
+	char	*res;
+	int		i;
+	int		j;
 
-	i = 0;
-	while (str && str[i])
-		i++;
-	return (i);
-}
-
-char *ft_join(char *s1, char *s2)
-{
-	size_t i;
-	size_t j;
-	char *res;
-
-	if (!s1 && !s2)
-		return (NULL);
-	res = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!s1)
+		s1 = ft_strdup("");
+	res = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!res)
-		return (NULL);
+		return (0);
 	i = 0;
 	j = 0;
-	while (s1 && s1[j])
+	while (s1 && s1[i])
 	{
-		res[i] = s1[j];
+		res[j] = s1[i];
 		i++;
 		j++;
 	}
-	if (s1)
-		free(s1);
-	j = 0;
-	while (s2 && s2[j])
+	i = 0;
+	while (s2 && s2[i])
 	{
-		res[i] = s2[j];
+		res[j] = s2[i];
 		i++;
 		j++;
 	}
-	res[i] = '\0';
-	return (res);
+	res[j] = '\0';
+	return (free(s1), (res));
 }
 
-char *get_line(int fd)
+char	*get_line(int fd)
 {
 	char	*buffer;
 	char	*res;
+	char	*temp;
 	int		line;
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -102,45 +76,32 @@ char *get_line(int fd)
 	{
 		ft_bzero(buffer, BUFFER_SIZE + 1);
 		line = read(fd, buffer, BUFFER_SIZE);
-		res = ft_join(res, buffer);
-		if (!res)
-		{
-			free(buffer);
-			return (NULL);
-		}
+		res = ft_strjoin(res, buffer);
+		if (!temp)
+			return (free(buffer), free(res), (NULL));
 	}
 	free(buffer);
 	if (line <= 0)
-	{
-		free(res);
-		return (NULL);
-	}
+		return (free(res), (NULL));
 	return (res);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	static char *after_n;
-	char 		*line;
-	char 		*res;
+	static char	*after_n;
+	char		*line;
+	char		*res;
 
-	line = get_line(fd);
-	if (!line)
-	{
-		if (after_n)
-			free(after_n);
-		return (NULL);
-	}
+	
 }
 
-int main(void)
+int	main(void)
 {
-	int file = open("get_next_line.c", O_RDONLY);
+	int file = open("test.txt", O_RDONLY);
 	char *temp;
 	while (temp = get_next_line(file))
 	{
 		printf("%s", temp);
-		free(temp);
 	}
 	close(file);
 	return (0);

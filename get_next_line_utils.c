@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/20 00:22:15 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/20 12:52:21 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,13 @@ char	*ft_strsup(char *s, int c)
 		return (NULL);
 	dest = malloc(sizeof(char) * ft_strlen_sup((char *) s, c) + 1);
 	if (!dest)
-	{
-		free(s);
 		return (NULL);
-	}
 	i = 0;
 	while (i <= ft_strlen_sup(s, c))
 	{
 		dest[i] = s[i];
 		i++;
 	}
-	free(s);
 	return (dest);
 }
 
@@ -81,20 +77,12 @@ void	ft_bzero(void *s, size_t n)
 	}
 }
 
-void	ft_memcpy(void *dest, void *src, size_t n)
+size_t	ft_strlen(const char *str)
 {
 	size_t	i;
-	char	*dest_c;
-	char	*src_c;
 
-	if (!dest && !src)
-		return ;
-	dest_c = (char *) dest;
-	src_c = (char *) src;
 	i = 0;
-	while (i < n)
-	{
-		dest_c[i] = src_c[i];
+	while (str && str[i])
 		i++;
-	}
+	return (i);
 }
