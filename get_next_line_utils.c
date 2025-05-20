@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/20 17:47:01 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/20 20:58:45 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_strsup(char *s, int c)
 	i = 0;
 	while (s[i] && s[i] != c)
 		i++;
-	if (s[i] == c) // Inclure le caractère si trouvé
+	if (s[i] == c)
 		i++;
 	dest = malloc(sizeof(char) * (i + 1));
 	if (!dest)

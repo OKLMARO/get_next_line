@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/20 17:49:14 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/20 20:58:29 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		s1 = ft_strdup("");
 	res = malloc((ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!res)
-		return (0);
+		return (NULL);
 	i = 0;
 	j = 0;
 	while (s1 && s1[i])
@@ -57,8 +57,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	res[j] = '\0';
-	free(s1);
-	return ((res));
+	return (free(s1), (res));
 }
 
 char	*get_line(int fd, char *after)
@@ -99,7 +98,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	after_n = get_line(fd, after_n);
-	if (!after_n || *after_n == '\0') // ← Ajout important
+	if (!after_n || *after_n == '\0')
 	{
 		free(after_n);
 		after_n = NULL;
