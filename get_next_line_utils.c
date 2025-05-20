@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/20 12:52:21 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/20 17:47:01 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,17 @@ char	*ft_strsup(char *s, int c)
 
 	if (!s)
 		return (NULL);
-	dest = malloc(sizeof(char) * ft_strlen_sup((char *) s, c) + 1);
+	i = 0;
+	while (s[i] && s[i] != c)
+		i++;
+	if (s[i] == c) // Inclure le caractère si trouvé
+		i++;
+	dest = malloc(sizeof(char) * (i + 1));
 	if (!dest)
 		return (NULL);
-	i = 0;
-	while (i <= ft_strlen_sup(s, c))
-	{
-		dest[i] = s[i];
-		i++;
-	}
+	for (size_t j = 0; j < i; j++)
+		dest[j] = s[j];
+	dest[i] = '\0';
 	return (dest);
 }
 
@@ -47,19 +49,15 @@ char	*ft_strdup(char *src)
 	char	*dest;
 
 	i = 0;
-	dest = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	dest = malloc(sizeof(char) * (ft_strlen(src) + 1));
 	if (!dest)
 		return (0);
-	while (src[i] && i <= BUFFER_SIZE)
+	while (src[i])
 	{
 		dest[i] = src[i];
 		i++;
 	}
-	while (i <= BUFFER_SIZE)
-	{
-		dest[i] = 0;
-		i++;
-	}
+	dest[i] = '\0';
 	return (dest);
 }
 
@@ -80,9 +78,12 @@ void	ft_bzero(void *s, size_t n)
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
+	
 
+	if(!str)
+		return 0;
 	i = 0;
-	while (str && str[i])
+	while (str[i])
 		i++;
 	return (i);
 }
