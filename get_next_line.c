@@ -6,7 +6,7 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 01:10:41 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/20 20:58:29 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/21 13:40:52 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		i;
 	int		j;
 
-	if(!s1)
+	if (!s1)
 		s1 = ft_strdup("");
 	res = malloc((ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!res)
@@ -56,8 +56,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		i++;
 		j++;
 	}
-	res[j] = '\0';
-	return (free(s1), (res));
+	return (res[j] = '\0', free(s1), s1 = NULL, (res));
 }
 
 char	*get_line(int fd, char *after)
@@ -106,26 +105,14 @@ char	*get_next_line(int fd)
 	}
 	res = ft_strsup(after_n, '\n');
 	if (!res)
-		return (NULL);
+		return (free(after_n), after_n = NULL, (NULL));
 	tmp = ft_strchr(after_n, '\n');
 	if (tmp)
-		after_n = ft_strdup(tmp + 1);
+		ft_swap(&after_n, tmp);
 	else
 	{
 		free(after_n);
 		after_n = NULL;
 	}
 	return (res);
-}
-
-int	main(void)
-{
-	int file = open("get_next_line.c", O_RDONLY);
-	char *temp;
-	while (temp = get_next_line(file))
-	{
-		printf("%s", temp);
-	}
-	close(file);
-	return (0);
 }

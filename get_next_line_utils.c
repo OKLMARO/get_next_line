@@ -6,25 +6,16 @@
 /*   By: oamairi <oamairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 11:07:52 by oamairi           #+#    #+#             */
-/*   Updated: 2025/05/20 20:58:45 by oamairi          ###   ########.fr       */
+/*   Updated: 2025/05/21 13:35:53 by oamairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen_sup(const char *s1, int c)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] && s1[i] != c)
-		i++;
-	return (i);
-}
-
 char	*ft_strsup(char *s, int c)
 {
 	size_t	i;
+	size_t	j;
 	char	*dest;
 
 	if (!s)
@@ -37,8 +28,12 @@ char	*ft_strsup(char *s, int c)
 	dest = malloc(sizeof(char) * (i + 1));
 	if (!dest)
 		return (NULL);
-	for (size_t j = 0; j < i; j++)
+	j = 0;
+	while (j < i)
+	{
 		dest[j] = s[j];
+		j++;
+	}
 	dest[i] = '\0';
 	return (dest);
 }
@@ -78,12 +73,22 @@ void	ft_bzero(void *s, size_t n)
 size_t	ft_strlen(const char *str)
 {
 	size_t	i;
-	
 
-	if(!str)
-		return 0;
+	if (!str)
+		return (0);
 	i = 0;
 	while (str[i])
 		i++;
 	return (i);
+}
+
+void	ft_swap(char **after_n, char *tmp)
+{
+	char	*prev_after_n;
+
+	prev_after_n = *after_n;
+	*after_n = ft_strdup(tmp + 1);
+	free(prev_after_n);
+	if (!after_n)
+		return ;
 }
